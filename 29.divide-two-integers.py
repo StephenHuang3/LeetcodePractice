@@ -9,6 +9,10 @@ class Solution(object):
     def divide(self, dividend, divisor):
         count = 0
 
+        if dividend == 0 :  return 0
+        if divisor ==  1 : return min(2**31-1, max(-2**31, dividend))
+        if divisor == -1 : return min(2**31-1, max(-2**31, -dividend))
+
         negative = False
 
         if (dividend < 0 and divisor > 0) :
