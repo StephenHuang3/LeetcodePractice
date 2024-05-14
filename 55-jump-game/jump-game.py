@@ -6,6 +6,8 @@ class Solution:
             if dis < i:
                 return False
             dis = max(dis, i + nums[i])
+            if dis >= len(nums) - 1:
+                return True
 
         if dis >= len(nums) - 1:
             return True
