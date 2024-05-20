@@ -1,10 +1,10 @@
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         cur = nums[0]
-        output = [1 for i in range(len(nums))]
+        output = [1]
 
         for i in range(1, len(nums), 1):
-            output[i] *= cur
+            output.append(cur)
             cur *= nums[i]
 
         cur = nums[len(nums) - 1]
