@@ -8,7 +8,7 @@ class Solution:
             visit.add(n)
             dsum = 0
             while n != 0:
-                dsum += ( n % 10) * (n % 10)
+                dsum += ( n % 10) **2
                 n = n // 10
             n = dsum
 
