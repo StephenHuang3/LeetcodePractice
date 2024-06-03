@@ -6,7 +6,6 @@ class Solution:
             if n in visit:
                 return False
             visit.add(n)
-            print(visit)
             dsum = 0
             while n != 0:
                 dsum += ( n % 10) * (n % 10)
