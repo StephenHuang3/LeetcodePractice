@@ -1,35 +1,35 @@
 class Solution:
     def solve(self, board: List[List[str]]) -> None:
-        def surrounded(r, c, visited):
-            if (r, c) in visited or r < 0 or c < 0 or r == len(board) or c == len(board[0]):
-                return True
-            visited.add((r, c))
+        visited = set()
+        def dfs(r, c):
+            if (r,c) in visited or r < 0 or c < 0 or r == len(board) or c == len(board[0]):
+                return
+            visited.add((r,c))
             if board[r][c] == "X":
-                return True
-            elif board[r][c] == "O" and (r == 0 or c == 0 or r == len(board) - 1 or c == len(board[0]) - 1):
-                return False
-            else:
-                return surrounded(r - 1, c, visited) and surrounded(r + 1, c, visited) and surrounded(r, c - 1, visited) and surrounded(r, c + 1, visited)
+                return
+            dfs(r + 1,c)
+            dfs(r - 1,c)
+            dfs(r,c + 1)
+            dfs(r,c - 1)
 
-        def fill(r, c, filled):
-            if (r, c) in filled or r < 0 or c < 0 or r == len(board) or c == len(board[0]):
-                return
-            filled.add((r, c))
-            if board[r][c] == "X":
-                return
-            board[r][c] = "X"
-            fill(r + 1, c, filled)
-            fill(r - 1, c, filled)
-            fill(r, c - 1, filled)
-            fill(r, c + 1, filled)
+        for r in range(len(board)):
+            if board[r][0] == "O":
+                dfs(r, 0)
+            if board[r][len(board[0]) - 1] == "O":
+                dfs(r, len(board[0]) - 1)
+        
+        for c in range(1, len(board[0])):
+            if board[0][c] == "O":
+                dfs(0, c)
+            if board[len(board) - 1][c] == "O":
+                dfs(len(board) - 1, c)
 
         for r in range(len(board)):
             for c in range(len(board[0])):
-                if board[r][c] == "O":
-                    visited = set()
-                    if surrounded(r, c, visited):
-                        filled = set()
-                        fill(r, c, filled)
+                if (r, c) not in visited:
+                    board[r][c] = "X"
+
+
 
                 
 
