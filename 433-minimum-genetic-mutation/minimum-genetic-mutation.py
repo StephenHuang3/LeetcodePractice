@@ -1,6 +1,8 @@
 class Solution:
     def minMutation(self, startGene: str, endGene: str, bank: List[str]) -> int:
         visited = set(["startGene"])
+        bankCheck = {i:1 for i in bank}
+
         def oneChange(old, new) -> bool:
             changes = 0
             for i in range(len(old)):
@@ -17,8 +19,9 @@ class Solution:
             # print(q)
             for i in range(length):
                 checkgene = q.popleft()
-                if checkgene in bank:
+                if steps != 0 and bankCheck[checkgene] == 1:
                     bank.remove(checkgene)
+                    bankCheck[checkgene] = 0
                 if checkgene == endGene:
                     return steps
                 # c = 0
