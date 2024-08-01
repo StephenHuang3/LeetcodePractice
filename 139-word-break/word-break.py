@@ -9,12 +9,12 @@ class Solution:
                 # print("s[i:i + len(word)")
                 # print(s[i:i + len(word)])
                 if i + len(word) <= len(s) and s[i:i + len(word)] == word and (dp[i - 1] or i - 1 < 0):
-                    print("word")
-                    print(word)
-                    print("s[i:i + len(word)")
-                    print(s[i:i + len(word)])
+                    # print("word")
+                    # print(word)
+                    # print("s[i:i + len(word)")
+                    # print(s[i:i + len(word)])
                     dp[i + len(word) - 1] = True
 
-        print(dp)
+        # print(dp)
         return dp[-1]
         
