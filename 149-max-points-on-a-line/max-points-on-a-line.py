@@ -13,11 +13,11 @@ class Solution:
                 # (y2 - y1) / (x2 - x1)
                 if (points[j][0] == points[i][0]):
                     slopes['und'] = slopes.get('und', 0) + 1
-                    maxcount = max(slopes['und'], maxcount)
+                    
                 else:
                     m = (points[j][1] - points[i][1]) / (points[j][0] - points[i][0])
                     slopes[m] = slopes.get(m, 0) + 1
-                    maxcount = max(slopes[m], maxcount)
+            maxcount = max(maxcount, max(slopes.values()))
 
         return maxcount + 1
 
