@@ -19,6 +19,9 @@ class Solution:
             if s[i + 1] != s[-i - 1]:
                 found_left = False
                 break
+        
+        if found_left:
+            return True
 
         for i in range(breakpoint, len(s) // 2):
             if s[i] != s[-i - 2]:
