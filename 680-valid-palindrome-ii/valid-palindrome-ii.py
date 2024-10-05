@@ -9,9 +9,6 @@ class Solution:
         if breakpoint == -1:
             return True
 
-        print("breakpoint")
-        print(breakpoint)
-
         found_left = True
         found_right = True
 
@@ -26,9 +23,6 @@ class Solution:
         for i in range(breakpoint, len(s) // 2):
             if s[i] != s[-i - 2]:
                 found_right = False
-                print("i")
-                print(i)
-                print(s[-i - 2]) 
                 break
         
         return found_left or found_right
