@@ -9,7 +9,6 @@ class Solution:
                 return
             
             visited.add((r,c))
-            print((r,c))
             if grid[r][c] == "1":
                 dfs(r + 1, c)
                 dfs(r, c + 1)
@@ -22,9 +21,7 @@ class Solution:
 
         for r in range(row):
             for c in range(col):
-                
                 if (r, c) not in visited and grid[r][c] == "1":
-                    print(grid[r][c])
                     count += 1
                     dfs(r, c)
 
