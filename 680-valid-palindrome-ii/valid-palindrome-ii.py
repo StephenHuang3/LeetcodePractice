@@ -1,28 +1,20 @@
 class Solution:
     def validPalindrome(self, s: str) -> bool:
-        breakpoint = -1
-        for i in range(len(s) // 2):
-            if s[i] != s[-i - 1]:
-                breakpoint = i
-                break
-        
-        if breakpoint == -1:
-            return True
+        l, r = 0, len(s) - 1
 
-        found_left = True
-        found_right = True
+        while l < r:
+            if s[l] == s[r]:
+                l += 1
+                r -= 1
+            else:
+                if s[l + 1] == s[r]:
+                    ns = s[l + 1: r + 1]
+                    if ns == ns[::-1]:
+                        return True
+                if s[l] == s[r - 1]:
+                    ns = s[l:r]
+                    return ns == ns[::-1]
 
-        for i in range(breakpoint, len(s) // 2):
-            if s[i + 1] != s[-i - 1]:
-                found_left = False
-                break
+                return False
         
-        if found_left:
-            return True
-
-        for i in range(breakpoint, len(s) // 2):
-            if s[i] != s[-i - 2]:
-                found_right = False
-                break
-        
-        return found_left or found_right
+        return True
