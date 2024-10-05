@@ -44,12 +44,23 @@ class LRUCache:
             self.remove_node(self.hp[key])
             self.add_node(key, value)
         else:
-            if self.used < self.capacity:
-                self.used += 1
+            if self.used == self.capacity:
+                self.remove_node(self.end.prev)
                 self.add_node(key, value)
             else:
                 self.add_node(key, value)
-                self.remove_node(self.end.prev)
+                self.used += 1
+
+        # if key in self.hp:
+        #     self.remove_node(self.hp[key])
+        #     self.add_node(key, value)
+        # else:
+        #     if self.used < self.capacity:
+        #         self.used += 1
+        #         self.add_node(key, value)
+        #     else:
+        #         self.add_node(key, value)
+        #         self.remove_node(self.end.prev)
 
 
 
