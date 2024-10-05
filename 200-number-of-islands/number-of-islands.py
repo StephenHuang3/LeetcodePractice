@@ -1,31 +1,31 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        visit = set()
-        def dfs(r, c):
-            if (r,c) in visit:
-                return
-            elif r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]):
-                return
+        visited = set()
+        count = 0
+        row, col = len(grid), len(grid[0])
 
-            visit.add((r, c))
-            if grid[r][c] == "1":
-                dfs(r - 1, c)
-                dfs(r + 1, c)
-                dfs(r, c - 1)
-                dfs(r, c + 1)
-            
+        def dfs(r, c):
+            if r < 0 or c < 0 or r >= row or c >= col or (r,c) in visited:
                 return
-        c = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if (i, j) not in visit:
-                    if grid[i][j] == "1":
-                        print("i j")
-                        print(i)
-                        print(i)
-                        c += 1
-                        dfs(i, j)
-                    else:
-                        visit.add((i, j))
+            
+            visited.add((r,c))
+            print((r,c))
+            if grid[r][c] == "1":
+                dfs(r + 1, c)
+                dfs(r, c + 1)
+                dfs(r - 1, c)
+                dfs(r, c - 1)
+            return
+
         
-        return c
+        
+
+        for r in range(row):
+            for c in range(col):
+                
+                if (r, c) not in visited and grid[r][c] == "1":
+                    print(grid[r][c])
+                    count += 1
+                    dfs(r, c)
+
+        return count
