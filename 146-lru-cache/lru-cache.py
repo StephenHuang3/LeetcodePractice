@@ -1,4 +1,3 @@
-# Definition for double-linked list.
 class ListNode:
     def __init__(self, key = 0, val=0, next=None, prev=None):
         self.key = key
@@ -17,40 +16,46 @@ class LRUCache:
         self.head.next = self.end
         self.end.prev = self.head
 
-    def addNode(self, key, val):
+    def add_node(self, key, val):
         new = ListNode(key, val)
-        new.prev = self.head
         new.next = self.head.next
+        new.prev = self.head
         self.head.next.prev = new
         self.head.next = new
         self.hp[key] = new
-    def rmNode(self, node: ListNode):
-        node.next.prev = node.prev
-        node.prev.next = node.next
-        del self.hp[node.key]
 
+    def remove_node(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        del self.hp[node.key]
+        
 
     def get(self, key: int) -> int:
-        if key in self.hp:
-            val = self.hp[key].val
-            self.rmNode(self.hp[key])
-            self.addNode(key, val)
-            return val
-        else:
+        if key not in self.hp:
             return -1
+        value = self.hp[key].val
+        self.remove_node(self.hp[key])
+        self.add_node(key, value)
 
+        return value
 
     def put(self, key: int, value: int) -> None:
         if key in self.hp:
-            self.rmNode(self.hp[key])
-            self.addNode(key, value)
+            self.remove_node(self.hp[key])
+            self.add_node(key, value)
         else:
             if self.used < self.capacity:
                 self.used += 1
-                self.addNode(key, value)
+                self.add_node(key, value)
             else:
-                self.addNode(key, value)
-                self.rmNode(self.end.prev)
+                self.add_node(key, value)
+                self.remove_node(self.end.prev)
+
+
+
+        
+
+        
 
 
 # Your LRUCache object will be instantiated and called as such:
