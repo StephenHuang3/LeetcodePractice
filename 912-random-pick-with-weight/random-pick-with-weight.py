@@ -3,15 +3,17 @@ class Solution:
 
     def __init__(self, w: List[int]):
         self.sum = sum(w)
-        self.lis = w
+        self.lis = []
+        c = 0
+        
+        for i in range(len(w)):
+            self.lis.append(c + w[i])
+            c += w[i]
         
 
     def pickIndex(self) -> int:
         random_number = random.randint(1, self.sum)
-        for i in range(len(self.lis)):
-            random_number -= self.lis[i]
-            if random_number <= 0:
-                return i
+        return bisect_left(self.lis, random.randint(1, self.sum))
         
 
 
