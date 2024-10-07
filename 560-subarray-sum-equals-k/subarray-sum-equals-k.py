@@ -13,5 +13,4 @@ class Solution:
             if cur_sum not in count:
                 count[cur_sum] = 0
             count[cur_sum] += 1
-        print(count)
         return res
