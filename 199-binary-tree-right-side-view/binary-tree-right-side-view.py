@@ -7,21 +7,14 @@
 from collections import deque
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        if not root:
-            return []
+        def recur(node, res, depth):
+            if not node:
+                return
+            if depth > len(res):
+                res.append(node.val)
+            recur(node.right, res, depth + 1)
+            recur(node.left, res, depth + 1)
 
-        q = deque()
-        q.append(root)
         res = []
-
-        while q:
-            length = len(q)
-            res.append(q[-1].val)
-            for i in range(length):
-                node = q.popleft()
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-        
+        recur(root, res, 1)
         return res
