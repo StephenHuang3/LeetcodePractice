@@ -4,11 +4,10 @@ class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
         h = []
         for x, y in points:
-            heapq.heappush(h, [math.sqrt(x*x + y*y), [x,y]])
+            dis = math.sqrt(x*x + y*y)
+            if len(h) < k:
+                heapq.heappush(h, (-dis, (x, y)))
+            else:
+                heapq.heappushpop(h,(-dis, (x, y)))
 
-        res = []
-        for i in range(k):
-            dis, point = heapq.heappop(h)
-            res.append(point)
-
-        return res
+        return [point[1] for point in h]
