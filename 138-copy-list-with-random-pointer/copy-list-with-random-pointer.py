@@ -12,18 +12,18 @@ class Solution:
         if not head:
             return None
 
+        cur = head
         hp = {}
 
-        cur = head
         while cur:
             hp[cur] = Node(cur.val)
             cur = cur.next
-
+        
         cur = head
 
         while cur:
-            hp[cur].next = hp.get(cur.next)
             hp[cur].random = hp.get(cur.random)
+            hp[cur].next = hp.get(cur.next)
             cur = cur.next
 
         return hp[head]
