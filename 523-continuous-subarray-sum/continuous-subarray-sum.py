@@ -3,21 +3,15 @@ class Solution:
         prefix = {}
         prefix[0] = -1
 
-        cur_val = 0
-        if len(nums) < 2:
-            return False
+        cur_val_mod = 0
 
         for i in range(len(nums)):
-            cur_val += nums[i]
-            if cur_val != 0 and cur_val % k == 0 and i >=1:
-                return True
-            break_point = prefix.get(cur_val % k, -2)
-            if break_point == -2:
-                prefix[cur_val % k] = i
+            cur_val_mod = (cur_val_mod + nums[i]) % k
+            if cur_val_mod in prefix:
+                if i - prefix[cur_val_mod] > 1:
+                    return True
                 continue
-            elif i - break_point > 1:
-                return True
             else:
-                continue
+                prefix[cur_val_mod] = i
 
         return False
