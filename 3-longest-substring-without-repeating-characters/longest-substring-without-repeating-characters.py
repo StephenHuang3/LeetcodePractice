@@ -6,7 +6,7 @@ class Solution:
 
 
         for i in range(len(s)):
-            if s[i] in char_idx and char_idx[s[i]] >= start:
+            if char_idx.get(s[i], -1) >= start:
                 start = char_idx[s[i]] + 1
                 char_idx[s[i]]= i
             else:
