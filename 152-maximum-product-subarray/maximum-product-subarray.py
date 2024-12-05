@@ -1,22 +1,22 @@
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        curmax = nums[0]
-        curmin = nums[0]
-        allmax = nums[0]
-        print("pos", curmin, curmax, allmax)
+        pref = 1
+        suf = 1
+        allmax = float('-infinity')
 
-        for i in range(1, len(nums)):
-            if nums[i] == 0:
-                curmax = 0
-                curmin = 0
-                allmax = max(allmax, 0)
-            else:
-                oldcurmax = curmax
-                curmax = max(nums[i], curmax * nums[i], curmin * nums[i])
-                curmin = min(nums[i], curmin * nums[i], oldcurmax * nums[i])
+        n = len(nums) - 1
 
-                allmax = max(allmax, curmax)
-            print("pos", curmin, curmax, allmax)
+        for i in range(n + 1):
+            if pref == 0:
+                pref = 1
+            if suf == 0:
+                suf = 1
+            pref *= nums[i]
+            suf *= nums[n - i]
+
+            allmax = max(allmax, pref, suf)
+
+        return allmax
             
         
         return allmax
