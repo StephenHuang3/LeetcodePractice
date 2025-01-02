@@ -1,32 +1,33 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        stack = deque()
-        current_num = 0
-        operator = 1
-        n = len(s)
-        result = 0
-        for i, char in enumerate(s):
+        stack = []
+        current_number = 0
+        current_result = 0
+        sign = 1
+        # s = s.replace(" ", "")
+
+        for char in s:
             if char.isdigit():
-                current_num = (current_num*10) + int(char)
-            if char in "+-()" or i==n-1:
-                if operator == 1:
-                    result+=current_num
-                elif operator == -1:
-                    result-=current_num
-                if char == '(':
-                    stack.append(result)
-                    stack.append(operator)
-                    operator = 1
-                    result=0
-                elif char == ')':
-                    sign = stack.pop()
-                    first_arg = stack.pop()
-                    result = first_arg + result * sign
+                current_number = current_number * 10 + int(char)
+            elif char == '+':
+                current_result += sign * current_number
+                current_number = 0
+                sign = 1
+            elif char == '-':
+                current_result += sign * current_number
+                current_number = 0
+                sign = -1
+            elif char == '(':
+                stack.append(current_result)
+                stack.append(sign)
+                current_result = 0
+                sign = 1
+            elif char == ")":
+                current_result += current_number * sign
+                current_number = 0
+                current_result *= stack.pop()
+                current_result += stack.pop()
 
-                current_num = 0
-                if char == '+':
-                    operator = 1
-                elif char == '-':
-                    operator = -1
+        return current_result + sign * current_number
 
-        return result
+
