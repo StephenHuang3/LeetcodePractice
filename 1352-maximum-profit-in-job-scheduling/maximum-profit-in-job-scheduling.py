@@ -1,18 +1,16 @@
 class Solution:
     def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
-        intervals = sorted(zip(startTime, endTime, profit))
-        cache = {}
+        max_profits = [0]
+        max_profit_ends = [-1]
 
-        def dfs(i):
-            if i in cache:
-                return cache[i]
-            if i == len(intervals):
-                return 0
+        sorted_indexes = [index for index in range(len(endTime))]
+        sorted_indexes.sort(key = lambda x: endTime[x])
 
-            res = dfs(i + 1)
-            j = bisect.bisect(intervals, (intervals[i][1], -1, -1))
-            cache[i] = res = max(res, intervals[i][2] + dfs(j))
+        for i in sorted_indexes:
+            available = bisect.bisect_right(max_profit_ends, startTime[i]) - 1
 
-            return res
+            if max_profits[-1] < profit[i] + max_profits[available]:
+                max_profits.append(profit[i] + max_profits[available])
+                max_profit_ends.append(endTime[i])
 
-        return dfs(0)
+        return max_profits[-1]
