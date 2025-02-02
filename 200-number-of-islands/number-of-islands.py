@@ -7,7 +7,7 @@ class Solution:
         C = len(grid[0])
 
         def dfs(r, c):
-            print("R c", r, c)
+            # print("R c", r, c)
             visited.add((r, c))
             for dy, dx in dir:
                 if 0 <= r + dx < R and 0 <= c + dy < C and grid[r + dx][c + dy] == "1" and (r + dx, c + dy) not in visited:
@@ -17,7 +17,7 @@ class Solution:
             for c in range(C):
                 if grid[r][c] == "1" and (r, c) not in visited:
                     count += 1
-                    print("trigger", r, c)
+                    # print("trigger", r, c)
                     dfs(r, c)
                     
         return count
