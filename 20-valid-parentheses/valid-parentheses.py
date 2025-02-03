@@ -2,21 +2,27 @@ class Solution:
     def isValid(self, s: str) -> bool:
         stk = []
 
-        for brac in s:
-            if brac in "([{":
-                stk.append(brac)
+        open = set()
+        open.add("(")
+        open.add("[")
+        open.add("{")
 
-            if len(stk) == 0:
-                return False
-            elif brac == ")":
-                if stk.pop() != "(":
+        for bra in s:
+            print(bra)
+            print(bra in open)
+            if bra in open:
+                stk.append(bra)
+            else:
+                if len(stk) == 0:
+                    print("len 0", bra)
                     return False
-            elif brac == "]":
-                if stk.pop() != "[":
+                popped = stk.pop()
+                if bra == ")" and popped != "(":
                     return False
-            elif brac == "}":
-                if stk.pop() != "{":
+                elif bra == "}" and popped != "{":
+                    return False
+                elif bra == "]" and popped != "[":
                     return False
 
-        return len(stk) == 0
-        
+        # print(len(stk))
+        return True if len(stk) == 0 else False
