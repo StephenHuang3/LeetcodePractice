@@ -1,71 +1,54 @@
-class ListNode:
-    def __init__(self, key = 0, val=0, next=None, prev=None):
+class Node:
+    def __init__(self, key, val):
         self.key = key
         self.val = val
-        self.next = next
-        self.prev = prev
+        self.prev = None
+        self.next = None
 
 class LRUCache:
 
     def __init__(self, capacity: int):
-        self.used = 0
-        self.capacity = capacity
-        self.hp = {}
-        self.head = ListNode(-1, -1)
-        self.end = ListNode(-1, -1)
-        self.head.next = self.end
-        self.end.prev = self.head
+        self.cap = capacity
+        self.cache = {}
 
-    def add_node(self, key, val):
-        new = ListNode(key, val)
-        new.next = self.head.next
-        new.prev = self.head
-        self.head.next.prev = new
-        self.head.next = new
-        self.hp[key] = new
+        self.oldest = Node(0, 0)
+        self.latest = Node(0, 0)
+        self.oldest.next = self.latest
+        self.latest.prev = self.oldest
 
-    def remove_node(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
-        del self.hp[node.key]
-        
+    def remove(self, node):
+        previous = node.prev
+        later = node.next
+        previous.next = later
+        later.prev = previous
+
+    def insert(self, node):
+        previous = self.latest.prev
+        later = self.latest
+        node.next = later
+        node.prev = previous
+        previous.next = node
+        later.prev = node
 
     def get(self, key: int) -> int:
-        if key not in self.hp:
-            return -1
-        value = self.hp[key].val
-        self.remove_node(self.hp[key])
-        self.add_node(key, value)
-
-        return value
-
-    def put(self, key: int, value: int) -> None:
-        if key in self.hp:
-            self.remove_node(self.hp[key])
-            self.add_node(key, value)
+        if key in self.cache:
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
         else:
-            if self.used == self.capacity:
-                self.remove_node(self.end.prev)
-                self.add_node(key, value)
-            else:
-                self.add_node(key, value)
-                self.used += 1
-
-        # if key in self.hp:
-        #     self.remove_node(self.hp[key])
-        #     self.add_node(key, value)
-        # else:
-        #     if self.used < self.capacity:
-        #         self.used += 1
-        #         self.add_node(key, value)
-        #     else:
-        #         self.add_node(key, value)
-        #         self.remove_node(self.end.prev)
-
-
-
+            return -1
         
 
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+
+        if len(self.cache) > self.cap:
+            lru = self.oldest.next
+            self.remove(lru)
+            del self.cache[lru.key]
         
 
 
