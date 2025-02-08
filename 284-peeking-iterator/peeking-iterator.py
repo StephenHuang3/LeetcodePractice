@@ -21,44 +21,40 @@
 
 class PeekingIterator:
     def __init__(self, iterator):
-        self.iterator = iterator
-        self.peek_element = None
         """
         Initialize your data structure here.
         :type iterator: Iterator
         """
-        
+        self.iterator = iterator
+        self.cur = self.iterator.next()
 
     def peek(self):
         """
         Returns the next element in the iteration without advancing the iterator.
         :rtype: int
         """
-        if self.peek_element:
-            return self.peek_element
-        top_element = self.iterator.next()
-        self.peek_element = top_element
-        return top_element
+        return self.cur
         
 
     def next(self):
         """
         :rtype: int
         """
-        if self.peek_element:
-            ret = self.peek_element
-            self.peek_element = None
-            return ret
-        return self.iterator.next()
+        ret = self.cur
+        
+        if self.iterator.hasNext():
+            self.cur = self.iterator.next()
+        else:
+            self.cur = None
+            
+        return ret
         
 
     def hasNext(self):
         """
         :rtype: bool
         """
-        if self.peek_element:
-            return True
-        return self.iterator.hasNext()
+        return self.cur != None
         
 
 # Your PeekingIterator object will be instantiated and called as such:
