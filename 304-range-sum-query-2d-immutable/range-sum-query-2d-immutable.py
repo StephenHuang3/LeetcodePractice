@@ -18,8 +18,8 @@ class NumMatrix:
                 cur += matrix[r][c]
                 self.dp[r][c] = self.dp[r - 1][c] + cur
 
-        for r in range(len(matrix)):
-            print(self.dp[r])
+        # for r in range(len(matrix)):
+        #     print(self.dp[r])
                 
 
 
