@@ -22,7 +22,7 @@
 class PeekingIterator:
     def __init__(self, iterator):
         self.iterator = iterator
-        self.queue = collections.deque()
+        self.peek_element = None
         """
         Initialize your data structure here.
         :type iterator: Iterator
@@ -34,10 +34,10 @@ class PeekingIterator:
         Returns the next element in the iteration without advancing the iterator.
         :rtype: int
         """
-        if self.queue:
-            return self.queue[0]
+        if self.peek_element:
+            return self.peek_element
         top_element = self.iterator.next()
-        self.queue.append(top_element)
+        self.peek_element = top_element
         return top_element
         
 
@@ -45,8 +45,10 @@ class PeekingIterator:
         """
         :rtype: int
         """
-        if self.queue:
-            return self.queue.popleft()
+        if self.peek_element:
+            ret = self.peek_element
+            self.peek_element = None
+            return ret
         return self.iterator.next()
         
 
@@ -54,7 +56,7 @@ class PeekingIterator:
         """
         :rtype: bool
         """
-        if self.queue:
+        if self.peek_element:
             return True
         return self.iterator.hasNext()
         
