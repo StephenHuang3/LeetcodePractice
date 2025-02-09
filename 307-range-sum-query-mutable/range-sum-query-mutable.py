@@ -1,69 +1,28 @@
-class Node:
-    
-    def __init__(self, start, end):
-        self.start = start
-        self.end = end
-        self.total = 0
-        self.left = None
-        self.right = None
-
-
 class NumArray:
 
     def __init__(self, nums: List[int]):
-        def createTree(start, end) -> Node:
-            if start > end:
-                return None
-            elif start == end:
-                new = Node(start, end)
-                new.total = nums[start]
-                return new
-            
-            mid = (start + end) // 2
-            new = Node(start, end)
-            new.left = createTree(start, mid)
-            new.right = createTree(mid + 1, end)
-            new.total = new.left.total + new.right.total
+        self.nums = nums
+        self.k = floor(sqrt(len(nums)))
+        self.buckets = []
 
-            return new
-
-        self.root = createTree(0, len(nums) - 1)
+        for i in range(0, len(nums), self.k):
+            bucket_sum = sum(nums[i:i + self.k])
+            self.buckets.append(bucket_sum)
 
     def update(self, index: int, val: int) -> None:
-
-        def recursively_update(node, index, val):
-            if node.left == node.right:
-                node.total = val
-                return val
-
-            mid = (node.start + node.end) // 2
-
-            if index <= mid:
-                recursively_update(node.left, index, val)
-            else:
-                recursively_update(node.right, index, val)
-
-            node.total = node.left.total + node.right.total
-
-        return recursively_update(self.root, index, val)
-
-
+        diff = val - self.nums[index]
+        self.nums[index] = val
+        self.buckets[(index // self.k)] += diff
+        
 
     def sumRange(self, left: int, right: int) -> int:
-        def findRange(node, l, r):
-            if node.start == l and node.end == r:
-                return node.total
+        jl = left // self.k
+        jr = right // self.k
 
-            mid = (node.start + node.end) // 2
+        if jl == jr:
+            return sum(self.nums[left:right + 1])
 
-            if r <= mid:
-                return findRange(node.left, l, r)
-            elif l > mid:
-                return findRange(node.right, l, r)
-            else:
-                return findRange(node.left, l, mid) + findRange(node.right, mid + 1, r)
-
-        return findRange(self.root, left, right)
+        return sum(self.buckets[jl + 1: jr]) + sum(self.nums[left:((jl + 1) * self.k)]) + sum(self.nums[jr * self.k:right + 1])
         
 
 
