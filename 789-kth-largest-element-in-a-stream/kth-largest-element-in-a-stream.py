@@ -8,7 +8,7 @@ class KthLargest:
             if len(self.heap) > k:
                 heapq.heappop(self.heap)
 
-        print(self.heap)
+        # print(self.heap)
         
 
     def add(self, val: int) -> int:
