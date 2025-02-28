@@ -3,16 +3,10 @@ import heapq
 
 class Solution:
     def asteroidsDestroyed(self, mass: int, asteroids: List[int]) -> bool:
-        wait_heap = []
+        asteroids.sort()
         for asteroid in asteroids:
-            while wait_heap and wait_heap[0] <= mass:
-                mass += heapq.heappop(wait_heap)
-            if asteroid <= mass:
+            if mass >= asteroid:
                 mass += asteroid
             else:
-                heapq.heappush(wait_heap, asteroid)
-
-        while wait_heap and wait_heap[0] <= mass:
-            mass += heapq.heappop(wait_heap)
-        
-        return not wait_heap
+                return False
+        return True
