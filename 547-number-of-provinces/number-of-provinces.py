@@ -1,41 +1,40 @@
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        if len(isConnected) == 0:
-            return 0
+        N = len(isConnected)
+        rank = [1] * N
+        parent = [i for i in range(N)]
+        num_prov = N
+
+        def find_par(prov):
+            res = prov
+
+            while res != parent[res]:
+                parent[res] = parent[parent[res]]
+                res = parent[res]
+
+            return res
         
-        par = [i for i in range(len(isConnected))]
-        size = [1 for i in range(len(isConnected))]
+        def union(prov1, prov2):
+            parent1 = find_par(prov1)
+            parent2 = find_par(prov2)
 
-        provinces = len(isConnected)
-
-        def getParent(c):
-            while par[c] != par[par[c]]:
-                par[c] = par[par[c]]
-
-            return par[c]
-
-        def union(c1, c2):
-            p1 = getParent(c1)
-            p2 = getParent(c2)
-
-            if p1 == p2:
+            if parent1 == parent2:
                 return 0
 
-            if size[c1] < size[c2]:
-                par[p1] = p2
-                size[p2] += size[p1]
+            if rank[parent1] > rank[parent2]:
+                rank[parent1] += rank[parent2]
+                parent[parent2] = parent1
+                parent[prov2] = parent1
             else:
-                par[p2] = p1
-                size[p1] += size[p2]
-
+                rank[parent2] += rank[parent1]
+                parent[parent1] = parent2
+                parent[prov1] = parent2
+            
             return 1
 
-        for r in range(len(isConnected)):
-            for c in range(len(isConnected[0])):
-                if r == c:
-                    continue
-                if isConnected[r][c]:
-                    # print("r c", r, c)
-                    provinces -= union(r, c)
+        for i in range(N):
+            for j in range(i + 1, N, 1):
+                if isConnected[i][j] == 1:
+                    num_prov -= union(i, j)
 
-        return max(1, provinces)
+        return num_prov
