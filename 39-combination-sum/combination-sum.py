@@ -1,22 +1,20 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
-        n = len(candidates)
-
-        def backtrack(pos, comb, total):
-            nonlocal n
-            if pos >= n or target < total:
+        N = len(candidates)
+        comb = []
+        def back_track(pos, total):
+            if total >= target:
+                # print("right comb",comb)
+                # print("total", total)
+                if total == target:
+                    res.append(list(comb))
                 return
 
-            if target == total:
-                res.append(comb[:])
-                return
-
-            comb.append(candidates[pos])
-            backtrack(pos, comb, total + candidates[pos])
-            comb.pop()
-            backtrack(pos + 1, comb, total)
-
-            return res
-
-        return backtrack(0, [], 0)
+            for i in range(pos, N, 1):
+                comb.append(candidates[i])
+                back_track(i, total + candidates[i])
+                comb.pop()
+        
+        back_track(0, 0)
+        return res
