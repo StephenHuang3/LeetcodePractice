@@ -5,14 +5,11 @@ class Solution:
         parent = [i for i in range(N)]
         num_prov = N
 
-        def find_par(prov):
-            res = prov
+        def find_par(c):
+            while parent[c] != parent[parent[c]]:
+                parent[c] = parent[parent[c]]
 
-            while res != parent[res]:
-                parent[res] = parent[parent[res]]
-                res = parent[res]
-
-            return res
+            return parent[c]
         
         def union(prov1, prov2):
             parent1 = find_par(prov1)
