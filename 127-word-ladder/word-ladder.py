@@ -1,35 +1,31 @@
+from collections import defaultdict, deque
+
 class Solution:
-    def ladderLength(self, begin_word: str, end_word: str, word_list: List[str]) -> int:
-        if begin_word not in word_list:
-            word_list.append(begin_word)
-        patterns = defaultdict(set)
-        for word in word_list:
-            for i in range(len(word)):
-                form = word[:i] + "*" + word[i+1:]
-                patterns[form].add(word)
-    
-        # Create a graph between words
-        graph = defaultdict(list)
-        for word in word_list:
-            local_set = set()
-            for i in range(len(word)):
-                form = word[:i] + "*" + word[i+1:]
-                local_set |= patterns[form]
-            graph[word] = list(local_set)
-        # find the shortest way between begin_word and end_word
-        # -> BFS
-        queue = deque([begin_word])
-        step = 0
-        visit = set([begin_word])
-        while queue:
-            step += 1
-            for _ in range(len(queue)):
-                choosen_word = queue.popleft()
-                if choosen_word == end_word:
-                    return step
-                for next_word in graph[choosen_word]:
-                    if next_word in visit:
-                        continue
-                    visit.add(next_word)
-                    queue.append(next_word)
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        seen = set()
+        seen.add(beginWord)
+        pattern_to_word = defaultdict(list)
+
+        for word in wordList:
+            for i in range(len(beginWord)):
+                pattern = word[:i] + "*" + word[i + 1:]
+                pattern_to_word[pattern].append(word)
+
+        level = 1
+        q = deque()
+        q.append(beginWord)
+        while q:
+            length = len(q)
+            for i in range(length):
+                word = q.popleft()
+                seen.add(word)
+                if word == endWord:
+                    return level
+                for i in range(len(beginWord)):
+                    pattern = word[:i] + "*" + word[i + 1:]
+                    for cand in pattern_to_word[pattern]:
+                        if cand not in seen:
+                            q.append(cand)
+            level += 1
+
         return 0
