@@ -7,13 +7,23 @@
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         if len(preorder) == 0:
-            return None
-        
-        root = TreeNode(preorder[0])
+            return
 
-        mid = inorder.index(preorder[0])
+        idx = {v: i for i, v in enumerate(inorder)}
+        n = len(preorder)
+        self.p = 0
 
-        root.left = self.buildTree(preorder[1:mid + 1], inorder[:mid])
-        root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
+        def helper(lo: int, hi: int) -> Optional['TreeNode']:
+            if lo > hi:
+                return None
 
-        return root
+            root_val = preorder[self.p]
+            new = TreeNode(root_val)
+            self.p += 1
+
+            mid = idx[root_val]
+            new.left = helper(lo, mid - 1)
+            new.right = helper(mid + 1, hi)
+            return new
+
+        return helper(0, n - 1)
