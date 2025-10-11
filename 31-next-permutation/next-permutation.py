@@ -1,23 +1,19 @@
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
-        peak = -1
-        for i in range(len(nums) - 1, 0, -1):
-            if nums[i] > nums[i - 1]:
-                peak = i
-                break
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        i = n - 2
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
 
-        if peak == -1:
-            nums.reverse()
-            return
+        if i >= 0:
+            j = n - 1
+            while nums[i] >= nums[j]:
+                j -= 1
+
+            nums[i], nums[j] = nums[j], nums[i]
+
+        nums[i + 1:] = reversed(nums[i + 1:])
         
-        minval = float('infinity')
-        minvalidx = -1
-        for i in range(len(nums) - 1, peak - 1, -1):
-            if nums[i] < minval and nums[i] > nums[peak - 1]:
-                minvalidx = i
-                minval = nums[i]
-
-        nums[peak - 1], nums[minvalidx] = nums[minvalidx], nums[peak - 1]
-
-        nums[peak:] = sorted(nums[peak:])
-        return
