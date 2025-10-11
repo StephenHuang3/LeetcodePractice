@@ -1,17 +1,18 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
         res = []
-        sample = []
-        def back(pos):
+        cur = []
+
+        def backtrack(pos):
             if pos == len(nums):
-                res.append(sample.copy())
+                res.append(cur.copy())
                 return
-            back(pos + 1)
-            sample.append(nums[pos])
-            back(pos + 1)
-            sample.pop()
-            return
 
+            cur.append(nums[pos])
+            backtrack(pos + 1)
+            cur.pop()
+            backtrack(pos + 1)
 
-        back(0)
+        backtrack(0)
         return res
