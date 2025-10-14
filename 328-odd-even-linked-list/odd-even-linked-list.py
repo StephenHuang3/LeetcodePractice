@@ -12,27 +12,17 @@ class Solution:
             return head
 
         e = head
-        last_even = head
         o = head.next
-        first_o = head.next
-        c = 0
-        cur = head.next.next
+        first_o = o
 
-        while cur:
-            # print(cur.val)
-            next_e = cur.next
-            if c == 0:
-                e.next = cur
-                e = cur
-                last_even = e
-            elif c == 1:
-                o.next = cur
-                o = cur
-            cur.next = None
-            cur = next_e
-            c = 1 - c
+        while o and o.next:
+            e.next = o.next
+            e = e.next
+            o.next = e.next
+            o = o.next
 
-        o.next = None
-        last_even.next = first_o
+        if o:
+            o.next = None
+        e.next = first_o
 
         return ret.next
