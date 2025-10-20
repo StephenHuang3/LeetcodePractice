@@ -4,7 +4,7 @@ class Solution:
         current_number = 0
         current_result = 0
         sign = 1
-        # s = s.replace(" ", "")
+        s = s.replace(" ", "")
 
         for char in s:
             if char.isdigit():
@@ -29,5 +29,3 @@ class Solution:
                 current_result += stack.pop()
 
         return current_result + sign * current_number
-
-
