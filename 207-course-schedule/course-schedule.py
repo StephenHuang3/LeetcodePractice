@@ -1,10 +1,8 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         prereqs = defaultdict(set)
-        leads_to = defaultdict(set)
         for pre, req in prerequisites:
             prereqs[pre].add(req)
-            leads_to[req].add(pre)
 
         visited = set()
 
