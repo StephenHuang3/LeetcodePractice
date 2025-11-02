@@ -9,20 +9,20 @@ class Solution:
         visited = set()
 
         def dfs(i):
-            print("dfs", i)
+            # print("dfs", i)
             if len(prereqs[i]) == 0:
                 return True
-            else:
-                print("i",i,"has prereqs", prereqs[i])
+            # else:
+            #     print("i",i,"has prereqs", prereqs[i])
 
             if i in visited:
-                print("i", i, "in visited")
+                # print("i", i, "in visited")
                 return False
 
             visited.add(i)
             for req in prereqs[i]:
                 if not dfs(req):
-                    print("dfs", i, "failed at", req)
+                    # print("dfs", i, "failed at", req)
                     return False
             visited.remove(i)
 
