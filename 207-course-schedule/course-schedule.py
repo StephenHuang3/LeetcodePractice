@@ -1,28 +1,32 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        prereq = defaultdict(list)
+        prereqs = defaultdict(set)
+        leads_to = defaultdict(set)
+        for pre, req in prerequisites:
+            prereqs[pre].add(req)
+            leads_to[req].add(pre)
+
         visited = set()
 
-        for pre, req in prerequisites:
-            prereq[pre].append(req)
-        
-        cantake = 0
-
-        def dfs(course):
-            if len(prereq[course]) == 0:
+        def dfs(i):
+            print("dfs", i)
+            if len(prereqs[i]) == 0:
                 return True
-            if course in visited:
+            else:
+                print("i",i,"has prereqs", prereqs[i])
+
+            if i in visited:
+                print("i", i, "in visited")
                 return False
-            
-            for cur in prereq[course]:
-                visited.add(course)
-                if not dfs(cur):
-                    visited.remove(course)
+
+            visited.add(i)
+            for req in prereqs[i]:
+                if not dfs(req):
+                    print("dfs", i, "failed at", req)
                     return False
+            visited.remove(i)
 
-                visited.remove(course)
-
-            prereq[course] = []
+            prereqs[i] = set()
             return True
 
         for i in range(numCourses):
@@ -30,4 +34,3 @@ class Solution:
                 return False
 
         return True
-
