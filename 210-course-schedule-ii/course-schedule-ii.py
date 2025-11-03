@@ -2,39 +2,25 @@ from collections import defaultdict, deque
 
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        prereqs = defaultdict(set)
+        leads_to = defaultdict(list)
+        indegree = [0] * numCourses
         for pre, req in prerequisites:
-            prereqs[pre].add(req)
+            leads_to[req].append(pre)
+            indegree[pre] += 1
 
-        visited = set()
-        ret = []
+        q = collections.deque([i for i in range(numCourses) if indegree[i] == 0])
+        ret = [x for x in q]
 
-        def dfs(i):
-            # print("dfs", i)
-            if len(prereqs[i]) == 0:
-                if i not in ret:
-                    ret.append(i)
-                return True
-            # else:
-            #     print("i",i,"has prereqs", prereqs[i])
+        while q:
+            node = q.popleft()
 
-            if i in visited:
-                # print("i", i, "in visited")
-                return []
+            for next_course in leads_to[node]:
+                indegree[next_course] -= 1
+                if indegree[next_course] == 0:
+                    q.append(next_course)
+                    ret.append(next_course)
+            leads_to[node] = []
 
-            visited.add(i)
-            for req in prereqs[i]:
-                if not dfs(req):
-                    # print("dfs", i, "failed at", req)
-                    return ret
-            visited.remove(i)
+        return ret if len(ret) == numCourses else []
 
-            prereqs[i] = set()
-            ret.append(i)
-            return True
-
-        for i in range(numCourses):
-            if not dfs(i):
-                return []
-
-        return ret
+        
