@@ -3,29 +3,38 @@ from collections import defaultdict, deque
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         prereqs = defaultdict(set)
-        res = []
-        seen = set()
-        leadsto = defaultdict(set)
-
         for pre, req in prerequisites:
             prereqs[pre].add(req)
-            leadsto[req].add(pre)
 
-        cantake = deque()
-        for i in range(numCourses):
+        visited = set()
+        ret = []
+
+        def dfs(i):
+            # print("dfs", i)
             if len(prereqs[i]) == 0:
-                cantake.append(i)
+                if i not in ret:
+                    ret.append(i)
+                return True
+            # else:
+            #     print("i",i,"has prereqs", prereqs[i])
 
-        while cantake:
-            course = cantake.popleft()
-            seen.add(course)
-            res.append(course)
-            for next_course in leadsto[course]:
-                prereqs[next_course].remove(course)
-                if len(prereqs[next_course]) == 0:
-                    if next_course not in seen:
-                        cantake.append(next_course)
+            if i in visited:
+                # print("i", i, "in visited")
+                return []
 
-        if len(res) == numCourses:
-            return res
-        return []
+            visited.add(i)
+            for req in prereqs[i]:
+                if not dfs(req):
+                    # print("dfs", i, "failed at", req)
+                    return ret
+            visited.remove(i)
+
+            prereqs[i] = set()
+            ret.append(i)
+            return True
+
+        for i in range(numCourses):
+            if not dfs(i):
+                return []
+
+        return ret
