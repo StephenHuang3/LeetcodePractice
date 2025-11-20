@@ -1,10 +1,17 @@
-from bisect import bisect
+import bisect
+
+
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        min_value = bisect_left(nums, target)
-        max_value = bisect_right(nums, target)
-
-        if min_value == max_value:
+        if not nums:
             return [-1,-1]
 
-        return [min_value, max_value - 1]
+        if target < nums[0] or nums[-1] < target:
+            return [-1, -1]
+
+        left = bisect.bisect_left(nums, target)
+        if nums[left] != target:
+            return [-1, -1]
+        right = bisect.bisect_right(nums, target)
+
+        return [left, max(left, right - 1)]
