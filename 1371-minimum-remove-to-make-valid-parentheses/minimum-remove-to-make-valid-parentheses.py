@@ -1,27 +1,29 @@
 class Solution:
     def minRemoveToMakeValid(self, s: str) -> str:
+        brac = set(['(', ')'])
+        ret = []
         stk = []
-        remove_set = set()
-
-        for i in range(len(s)):
-            if s[i] == "(":
-                stk.append(i)
-            if s[i] == ")":
-                if len(stk) == 0:
-                    remove_set.add(i)
+        for i, c in enumerate(s):
+            if c in brac:
+                if c == '(':
+                    stk.append(('(', i))
+                    ret.append(('(', i))
                 else:
-                    stk.pop()
-        
-        while stk:
-            remove_set.add(stk.pop())
+                    if stk:
+                        stk.pop()
+                        ret.append(')')
+            else:
+                ret.append(c)
 
-        res = ""
+        pos = set([i[1] for i in stk])
 
-        for i in range(len(s)):
-            if i in remove_set:
+        ret2 = []
+        for i in range(len(ret)):
+            if isinstance(ret[i], str):
+                ret2.append(ret[i])
+            elif ret[i][1] in pos:
                 continue
             else:
-                res += s[i]
+                ret2.append(ret[i][0])
 
-        return res
-        
+        return "".join(ret2)
