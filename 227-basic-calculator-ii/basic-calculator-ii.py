@@ -1,31 +1,24 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        stack = []
-        num = ""
-        prev_operator = '+'
+        num, PreSign, stk=0, '+', []
+        for c in s + '+':
+            if c == ' ':
+                continue
+            elif c.isnumeric():
+                num = num * 10 + int(c)
+            elif c in "+-*/":
+                if PreSign == "+":
+                    stk.append(num)
+                if PreSign == "-":
+                    stk.append(-num)
+                if PreSign == "*":
+                    op1 = stk.pop()
+                    stk.append(op1 * num)
+                if PreSign == "/":
+                    op1 = stk.pop()
+                    stk.append(math.trunc(op1/num))
 
-        for i in range(len(s) + 1):
-            ch = s[i] if i < len(s) else '\0'
+                num = 0
+                PreSign = c
 
-            if ch.isdigit():
-                num += ch
-            elif ch != " " or i == len(s):
-                match prev_operator:
-                    case "+":
-                        stack.append(int(num))
-                    case "-":
-                        stack.append(-1 * int(num))
-                    case "*":
-                        op1 = stack.pop()
-                        stack.append(op1 * int(num))
-                    case "/":
-                        op1 = stack.pop()
-                        stack.append(int(op1 / int(num)))
-
-                    
-                prev_operator = ch
-                num = ""
-
-        return sum(stack)
-
-        
+        return sum(stk)
