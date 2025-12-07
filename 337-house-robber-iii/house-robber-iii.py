@@ -6,38 +6,15 @@
 #         self.right = right
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
-        cache = {}
-        def rob_helper_lis(node_list):
-            return sum(rob_helper(node) for node in node_list)
-
         def rob_helper(node):
             if not node:
-                return 0
+                return (0, 0)
 
-            if node in cache:
-                return cache[node]
+            left = rob_helper(node.left) 
+            right = rob_helper(node.right)
+            rob = node.val + left[1] + right[1]
+            not_rob = max(left) + max(right)
             
-            grand_children = []
-            children = []
-            if node.left:
-                children.append(node.left)
-                l_node = node.left
-                if l_node.left:
-                    grand_children.append(l_node.left)
-                if l_node.right:
-                    grand_children.append(l_node.right)
-            if node.right:
-                children.append(node.right)
-                r_node = node.right
-                if r_node.left:
-                    grand_children.append(r_node.left)
-                if r_node.right:
-                    grand_children.append(r_node.right)
-
-            ret = max(node.val + rob_helper_lis(grand_children), rob_helper_lis(children))
-            cache[node] = ret
-            return ret
-
-        return rob_helper(root)
-
+            return (rob, not_rob)
         
+        return max(rob_helper(root))
