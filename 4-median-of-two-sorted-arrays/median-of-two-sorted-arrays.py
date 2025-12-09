@@ -1,30 +1,30 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        A, B = nums1, nums2
-        total = len(nums1) + len(nums2)
-        half = total // 2
+        if len(nums1) > len(nums2):
+            return self.findMedianSortedArrays(nums2, nums1)
 
-        if len(B) < len(A):
-            A, B = B, A
-
-        l, r = 0, len(A) - 1
+        l = 0
+        r = len(nums1) - 1
+        half = (len(nums1) + len(nums2)) // 2
 
         while True:
-            i = (l + r) // 2 # A
-            j = half - i - 2 # B
+            last_left_idx = (l + r) // 2
+            last_left_idx2 = half - last_left_idx - 2
+            print(last_left_idx)
+            print(last_left_idx2)
 
-            Aleft = A[i] if i >= 0 else float('-infinity')
-            Bleft = B[j] if j >= 0 else float('-infinity')
+            most_left = nums1[last_left_idx] if last_left_idx >= 0 else float("-inf")
+            most_left2 = nums2[last_left_idx2] if last_left_idx2 >= 0 else float("-inf")
+            least_right = nums1[last_left_idx + 1] if last_left_idx + 1 < len(nums1) else float("inf")
+            least_right2 = nums2[last_left_idx2 + 1] if last_left_idx2 + 1 < len(nums2) else float("inf")
 
-            Aright = A[i + 1] if i + 1 < len(A) else float('infinity')
-            Bright = B[j + 1] if j + 1 < len(B) else float('infinity')
-
-            if Aleft <= Bright and Bleft <= Aright:
-                if total % 2 == 0:
-                    return (min(Aright, Bright) + max(Aleft, Bleft)) / 2
+            if most_left <= least_right2 and most_left2 <= least_right:
+                if (len(nums1) + len(nums2)) % 2 == 0:
+                    return (max(most_left, most_left2) + min(least_right, least_right2)) / 2
                 else:
-                    return min(Aright, Bright)
-            elif Aleft > Bright:
-                r = i - 1
+                    return  min(least_right, least_right2)
+
+            if most_left > least_right2:
+                r = last_left_idx - 1
             else:
-                l = i + 1
+                l = last_left_idx + 1
