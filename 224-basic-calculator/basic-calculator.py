@@ -1,31 +1,49 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        stack = []
-        current_number = 0
-        current_result = 0
+        stk = []
+        cur_val = 0
+        result = 0
         sign = 1
-        s = s.replace(" ", "")
 
-        for char in s:
-            if char.isdigit():
-                current_number = current_number * 10 + int(char)
-            elif char == '+':
-                current_result += sign * current_number
-                current_number = 0
-                sign = 1
-            elif char == '-':
-                current_result += sign * current_number
-                current_number = 0
-                sign = -1
-            elif char == '(':
-                stack.append(current_result)
-                stack.append(sign)
-                current_result = 0
-                sign = 1
-            elif char == ")":
-                current_result += current_number * sign
-                current_number = 0
-                current_result *= stack.pop()
-                current_result += stack.pop()
+        for c in s:
+            # print("c", cur_val, result, stk)
+            if c == ' ':
+                continue
+            elif c.isnumeric():
+                cur_val = cur_val * 10 + int(c)
+            elif c in "()":
+                if c == "(":
+                    result = result + cur_val * sign
+                    stk.append(result)
+                    stk.append(sign)
+                    result = 0
+                else:
+                    # print(stk)
+                    # print('result', result)
+                    result += cur_val * sign
+                    # print("curval", cur_val)
+                    # print(result)
+                    old_sign = stk.pop()
+                    old_result = stk.pop()
+                    # print("oldsign", old_sign)
+                    # print("oldresult", old_result)
+                    result = old_result + old_sign * result
 
-        return current_result + sign * current_number
+                cur_val = 0
+                sign = 1
+                
+            elif c in "+-":
+                if c == "+":
+                    # print("+ before", result)
+                    result += cur_val * sign
+                    sign = 1
+                    # print("+", cur_val)
+                    # print("+", result)
+                elif c == "-":
+                    result += cur_val * sign
+                    sign = -1
+
+                cur_val = 0
+
+        print(result, cur_val)
+        return result + cur_val * sign
