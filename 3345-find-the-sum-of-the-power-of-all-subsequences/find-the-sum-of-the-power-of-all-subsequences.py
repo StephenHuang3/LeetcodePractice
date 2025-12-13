@@ -11,5 +11,5 @@ class Solution:
                 dp[v] = (dp[v] * 2 + (dp[v - a] if v >= a else 0)) % mod
         return dp[k]
 
-        print(dp)
+        # print(dp)
         return dp[k][-1]
