@@ -5,17 +5,18 @@ class Solution:
     def smallestTrimmedNumbers(self, nums: List[str], queries: List[List[int]]) -> List[int]:
         num_len = len(nums[0])
         ret = []
+        trim2arr = {}
 
         for k, trim in queries:
-            trimmed = [int(i[num_len - trim:]) for i in nums]
-            hp = []
-            for i, num in enumerate(trimmed):
-                heapq.heappush(hp, (-num, -i))
-                if len(hp) > k:
-                    heapq.heappop(hp)
+            if trim in trim2arr:
+                continue
+            else:
+                trimmed = [(int(num[num_len - trim:]), i) for i, num in enumerate(nums)]
+                trimmed.sort()
+                trim2arr[trim] = trimmed
 
-            # print(hp)
-            neg_kth_smallest, neg_idx = heapq.heappop(hp)
-            ret.append(-neg_idx)
+        for k, trim in queries:
+            trimmed = trim2arr[trim]
+            ret.append(trimmed[k - 1][1])
 
         return ret
