@@ -11,7 +11,6 @@ class Solution:
                 ns[ss & num] += v
             ns[num] += 1
             ans += ns[k]
-            print(ns[k])
             s = ns
         
         return ans
