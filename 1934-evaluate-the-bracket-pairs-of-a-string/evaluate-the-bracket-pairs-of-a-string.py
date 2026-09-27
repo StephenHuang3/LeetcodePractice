@@ -8,15 +8,15 @@ class Solution:
         c = 0
         while c < len(s):
             if s[c] == "(":
+                b= c + 1
                 c += 1
-                cur = []
+                e = b
                 while s[c] != ")":
-                    print(s[c])
-                    cur.append(s[c])
+                    e += 1
                     c += 1
 
                 c += 1
-                res.append(kv.get("".join(cur), "?"))
+                res.append(kv.get(s[b:e], "?"))
             else:
                 res.append(s[c])
                 c += 1
