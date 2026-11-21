@@ -8,7 +8,7 @@ class Solution:
         dir_graph = defaultdict(list)
         new_parent = deepcopy(parent)
         new_dir_graph = defaultdict(list)
-        output = [0 for i in range(len(parent))]
+        output = [1 for i in range(len(parent))]
 
         for i in range(len(parent)):
             dir_graph[parent[i]].append(i)
@@ -20,21 +20,23 @@ class Solution:
             for child in dir_graph[cur]:
                 dfs(child)
             ancestors[s[cur]].pop()
+            if cur != 0:
+                output[new_parent[cur]] += output[cur]
 
         dfs(0)
 
-        print(new_parent)
-        for i in range(len(parent)):
-            new_dir_graph[new_parent[i]].append(i)
+        # print(new_parent)
+        # for i in range(len(parent)):
+        #     new_dir_graph[new_parent[i]].append(i)
 
-        def fill_size(cur):
-            total = 1
-            for child in new_dir_graph[cur]:
-                total += fill_size(child)
+        # def fill_size(cur):
+        #     total = 1
+        #     for child in new_dir_graph[cur]:
+        #         total += fill_size(child)
 
-            output[cur] = total
-            return total
+        #     output[cur] = total
+        #     return total
         
-        fill_size(0)
+        # fill_size(0)
 
         return output
